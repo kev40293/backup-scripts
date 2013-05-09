@@ -84,12 +84,13 @@ class backup_parser(parser):
             cf.write("}\n")
 
 class config_parser(parser):
-   options_db = dict()
+   options_db = {
+         "default": default_opts()
+         }
    def __init__(self, config_file):
       parser.__init__(self, config_file)
       self.filename = config_file
       self.read_config()
-
 
    def read_config(self):
       with open(self.filename) as cf:

@@ -60,7 +60,7 @@ if (len(sys.argv) < 2):
 
 backup_type = sys.argv[1]
 
-cparse = config_parser("example-config")
+cparse = config_parser(os.environ["HOME"] + "/.pytarbak")
 options = cparse.get_options()
 aparse = arg_parser(sys.argv[2:], opt=options)
 
@@ -70,7 +70,6 @@ if p != "default":
 
 options = aparse.options
 
-print options
 #back_ob = backup(backup_source, backup_dest, excludes=['.cache'])
 back_ob = backup(options)
 if backup_type == "full":
