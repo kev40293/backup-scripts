@@ -5,14 +5,13 @@ import os
 import os.path
 from subprocess import call
 import datetime
-from configparser import parser
+from configparser import backup_parser
 
 
 now= datetime.datetime.now()
 curdate = now.strftime("%Y-%m-%dT%H:%M:%S")
 
 class backup:
-   backups = dict()
    def __init__(self):
       pass
    def __init__(self, path_to_target, destination, excludes=[], name=""):
@@ -25,28 +24,12 @@ class backup:
          self.name = name
       for ex in excludes:
          self.exclude_list.append("--exclude="+ ex)
-      self.read_backup_file()
-
-   def read_backup_file(self):
-      cparse = parser('{0}/{1}.backup'.format(self.dest, self.name))
-      while True:
-         date = cparse.parseString()
-         if date is None:
-            break
-         backup_list = cparse.parseBlock()
-         self.backups[date] = backup_list
+      self.bparse = backup_parser('{0}/{1}.backup'.format(self.dest, self.name))
+      print self.bparse.backups
 
    def partial(self):
-      self.snardate = max(self.backups.keys())
-      outfile = self.run("part", self.snardate)
-      self.backups[self.snardate].append(outfile)
-      print self.backups
-      with open('{0}/{1}.backup'.format(self.dest, self.name), "w") as cf:
-         for key in self.backups.keys():
-            cf.write(key + " {\n")
-            for v in self.backups[key]:
-               cf.write(v + "\n")
-            cf.write("}\n")
+      outfile = self.run("part", max(self.bparse.backups.keys()))
+      self.bparse.add_backup(outfile)
 
    def full(self):
       outfile = self.run("full", curdate)

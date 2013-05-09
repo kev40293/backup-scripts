@@ -47,3 +47,29 @@ class parser:
    def empty(self):
       return self.stream == ""
 
+class backup_parser(parser):
+   backups = dict()
+   def __init__(self, backup_file):
+      parser.__init__(self, backup_file)
+      self.filename = backup_file
+      self.read_backup_file()
+
+   def read_backup_file(self):
+      while True:
+         date = self.parseString()
+         if date is None:
+            break
+         backup_list = self.parseBlock()
+         self.backups[date] = backup_list
+      return self.backups
+
+   def add_backup(self, outfile):
+      snardate = max(self.backups.keys())
+      self.backups[snardate].append(outfile)
+      with open(self.filename, "w") as cf:
+         for key in self.backups.keys():
+            cf.write(key + " {\n")
+            for v in self.backups[key]:
+               cf.write(v + "\n")
+            cf.write("}\n")
+
