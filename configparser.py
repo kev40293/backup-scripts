@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import re
+import re, os
 
 def default_opts():
    return{
@@ -142,7 +142,7 @@ class arg_parser(parser):
       src = self.parseString()
       dest = self.parseString()
       if src is not None:
-         self.options['target'] = src
+         self.options['target'] = os.path.realpath(src)
       if dest is not None:
-         self.options['dest'] = dest
+         self.options['dest'] = os.path.realpath(dest)
 
