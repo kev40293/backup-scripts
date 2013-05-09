@@ -20,9 +20,9 @@ class backup:
       self.dest = options['dest']
       self.target_dir = os.path.dirname(options['target'])
       self.exclude_list = []
+      if options['name'] == "":
+         options['name'] = self.target
       self.name = self.target
-      if not options['name'] == "":
-         self.name = options['name']
       for ex in options['exclude']:
          self.exclude_list.append("--exclude="+ ex)
       self.bparse = backup_parser('{0}/{1}.backup'.format(self.dest, self.name))
