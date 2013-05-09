@@ -5,7 +5,7 @@ import os
 import os.path
 from subprocess import call
 import datetime
-from configparser import backup_parser
+from configparser import backup_parser, config_parser
 
 
 now= datetime.datetime.now()
@@ -14,15 +14,16 @@ curdate = now.strftime("%Y-%m-%dT%H:%M:%S")
 class backup:
    def __init__(self):
       pass
-   def __init__(self, path_to_target, destination, excludes=[], name=""):
-      self.target = os.path.basename(path_to_target)
-      self.dest = destination
-      self.target_dir = os.path.dirname(path_to_target)
+   #def __init__(self, path_to_target, destination, excludes=[], name=""):
+   def __init__(self, options):
+      self.target = os.path.basename(options['target'])
+      self.dest = options['dest']
+      self.target_dir = os.path.dirname(options['target'])
       self.exclude_list = []
       self.name = self.target
-      if not name == "":
-         self.name = name
-      for ex in excludes:
+      if not options['name'] == "":
+         self.name = options['name']
+      for ex in options['exclude']:
          self.exclude_list.append("--exclude="+ ex)
       self.bparse = backup_parser('{0}/{1}.backup'.format(self.dest, self.name))
 
@@ -52,8 +53,6 @@ class backup:
       os.chdir(oldp)
       return os.path.basename(outname)
 
-snar_date=curdate
-from config import *
 
 if (len(sys.argv) < 2):
    print 'backup.py source destination [config]'
@@ -61,13 +60,17 @@ if (len(sys.argv) < 2):
 
 backup_type = sys.argv[1]
 
+cparse = config_parser("example-config")
+options = cparse.get_options()
+
 if len(sys.argv) > 2:
-   backup_source = os.path.realpath(sys.argv[2])
+   options['target'] = os.path.realpath(sys.argv[2])
 
 if len(sys.argv) > 3:
-   backup_dest = os.path.realpath(sys.argv[3])
+   options['dest'] = os.path.realpath(sys.argv[3])
 
-back_ob = backup(backup_source, backup_dest, excludes=['.cache'])
+#back_ob = backup(backup_source, backup_dest, excludes=['.cache'])
+back_ob = backup(options)
 if backup_type == "full":
    back_ob.full()
 elif backup_type == "partial":

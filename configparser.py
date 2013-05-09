@@ -18,7 +18,7 @@ class parser:
       pass
 
    def parseString(self):
-      m = re.match('\A([\S:]*)', self.stream)
+      m = re.match('\A([^ \t\n\r\f\v=]*)', self.stream)
       self.stream = self.stream.lstrip(m.group(0))
       self.spaces()
       if m.group(0) == "":
@@ -40,6 +40,8 @@ class parser:
       exp_list = []
       while self.symbols("}") is None:
          st = self.parseString()
+         if self.symbols("=") is not None:
+            st += "=" + self.parseString()
          exp_list.append(st)
       self.spaces()
       return exp_list
@@ -73,3 +75,41 @@ class backup_parser(parser):
                cf.write(v + "\n")
             cf.write("}\n")
 
+class config_parser(parser):
+   options_db = dict()
+   def __init__(self, config_file):
+      parser.__init__(self, config_file)
+      self.filename = config_file
+      self.read_config()
+
+   def default_opts(self):
+      return{
+         "name": "",
+         "target": "",
+         "dest": "",
+         "exclude": []
+         }
+
+   def read_config(self):
+      with open(self.filename) as cf:
+         while True:
+            profile = self.parseString()
+            if profile is None:
+               break
+            self.options_db[profile] = self.default_opts()
+            confs = self.parseBlock()
+            for pair in confs:
+               arg, val = pair.split("=")
+               if arg == "exclude":
+                     self.options_db[profile][arg].append(val)
+               else:
+                  self.options_db[profile][arg] = val
+      return self.options_db
+
+   def get_options(self, profile="default"):
+      return self.options_db[profile]
+   def get_opt(self, option, profile="default"):
+      try:
+         return self.options_db[profile][option]
+      except KeyError:
+         return None

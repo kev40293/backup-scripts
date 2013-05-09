@@ -1,10 +1,10 @@
 #!/usr/bin/python
 
-from configparser import backup_parser
+from configparser import backup_parser, config_parser
 import sys
 
 #cparse = parser(sys.argv[1])
-backups = dict()
+#backups = dict()
 #while not cparse.empty():
    #date = cparse.parseString()
    #if date is None:
@@ -13,11 +13,17 @@ backups = dict()
    #if backup_list is None:
       #break
    #backups[date] = backup_list
-bparse = backup_parser(sys.argv[1])
-backups = bparse.read_backup_file()
+#bparse = backup_parser(sys.argv[1])
+#backups = bparse.read_backup_file()
 
-for key in backups.keys():
-   print (key + " {\n")
-   for v in backups[key]:
-      print (v + "\n")
-   print ("}\n")
+#or key in backups.keys():
+#   print (key + " {\n")
+#   for v in backups[key]:
+#      print (v + "\n")
+#   print ("}\n")
+
+options = dict()
+
+cparse = config_parser("example-config")
+print cparse.get_opt("exclude")
+print cparse.get_opt("exclude", profile="kevin")
