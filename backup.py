@@ -25,7 +25,6 @@ class backup:
       for ex in excludes:
          self.exclude_list.append("--exclude="+ ex)
       self.bparse = backup_parser('{0}/{1}.backup'.format(self.dest, self.name))
-      print self.bparse.backups
 
    def partial(self):
       outfile = self.run("part", max(self.bparse.backups.keys()))
@@ -63,10 +62,10 @@ if (len(sys.argv) < 2):
 backup_type = sys.argv[1]
 
 if len(sys.argv) > 2:
-   backup_source = sys.argv[2]
+   backup_source = os.path.realpath(sys.argv[2])
 
 if len(sys.argv) > 3:
-   backup_dest = sys.argv[3]
+   backup_dest = os.path.realpath(sys.argv[3])
 
 back_ob = backup(backup_source, backup_dest, excludes=['.cache'])
 if backup_type == "full":
