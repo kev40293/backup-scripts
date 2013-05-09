@@ -1,6 +1,14 @@
 #!/usr/bin/python
 import re
 
+def default_opts():
+   return{
+      "name": "",
+      "target": "",
+      "dest": "",
+      "exclude": [],
+      "profile": "default"
+      }
 
 class parser:
    def __init__(self, filename):
@@ -18,7 +26,7 @@ class parser:
       pass
 
    def parseString(self):
-      m = re.match('\A([^ \t\n\r\f\v=]*)', self.stream)
+      m = re.match('\A([^ \t\n\r\f\v={}]*)', self.stream)
       self.stream = self.stream.lstrip(m.group(0))
       self.spaces()
       if m.group(0) == "":
@@ -82,13 +90,6 @@ class config_parser(parser):
       self.filename = config_file
       self.read_config()
 
-   def default_opts(self):
-      return{
-         "name": "",
-         "target": "",
-         "dest": "",
-         "exclude": []
-         }
 
    def read_config(self):
       with open(self.filename) as cf:
@@ -96,7 +97,7 @@ class config_parser(parser):
             profile = self.parseString()
             if profile is None:
                break
-            self.options_db[profile] = self.default_opts()
+            self.options_db[profile] = default_opts()
             confs = self.parseBlock()
             for pair in confs:
                arg, val = pair.split("=")
@@ -113,3 +114,34 @@ class config_parser(parser):
          return self.options_db[profile][option]
       except KeyError:
          return None
+
+class arg_parser(parser):
+   def __init__(self, args, opt=None):
+      self.stream = " ".join(args)
+      self.options = opt
+      if self.options is None:
+         self.options = default_opts()
+      self.parse_args()
+   def parse_arg(self):
+      if self.symbols("--") is None:
+         return False
+      k = self.parseString()
+      if self.symbols("=") is None:
+         return False
+      v = self.parseString()
+      if k == "exclude":
+         self.options[k].append(v)
+      else:
+         self.options[k] = v
+      return True
+
+   def parse_args(self):
+      while self.parse_arg():
+         pass
+      src = self.parseString()
+      dest = self.parseString()
+      if src is not None:
+         self.options['target'] = src
+      if dest is not None:
+         self.options['dest'] = dest
+

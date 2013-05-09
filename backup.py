@@ -5,7 +5,7 @@ import os
 import os.path
 from subprocess import call
 import datetime
-from configparser import backup_parser, config_parser
+from configparser import backup_parser, config_parser, arg_parser
 
 
 now= datetime.datetime.now()
@@ -62,13 +62,15 @@ backup_type = sys.argv[1]
 
 cparse = config_parser("example-config")
 options = cparse.get_options()
+aparse = arg_parser(sys.argv[2:], opt=options)
 
-if len(sys.argv) > 2:
-   options['target'] = os.path.realpath(sys.argv[2])
+p = aparse.options['profile']
+if p != "default":
+   aparse = arg_parser(sys.argv[2:], opt=cparse.get_options(profile=p))
 
-if len(sys.argv) > 3:
-   options['dest'] = os.path.realpath(sys.argv[3])
+options = aparse.options
 
+print options
 #back_ob = backup(backup_source, backup_dest, excludes=['.cache'])
 back_ob = backup(options)
 if backup_type == "full":

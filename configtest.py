@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from configparser import backup_parser, config_parser
+from configparser import backup_parser, config_parser, arg_parser
 import sys
 
 #cparse = parser(sys.argv[1])
@@ -25,5 +25,9 @@ import sys
 options = dict()
 
 cparse = config_parser("example-config")
-print cparse.get_opt("exclude")
-print cparse.get_opt("exclude", profile="kevin")
+#print cparse.get_opt("exclude")
+#print cparse.get_opt("exclude", profile="kevin")
+aparse = arg_parser(sys.argv[1:], opt=cparse.get_options())
+#aparse = arg_parser(sys.argv[1:])
+print aparse.options
+print aparse.options['exclude']
