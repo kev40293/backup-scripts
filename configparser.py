@@ -26,7 +26,7 @@ class parser:
       pass
 
    def parseString(self):
-      m = re.match('\A([^ \t\n\r\f\v={}]*)', self.stream)
+      m = re.match('\A([^\t\n\r\f\v={}]*)', self.stream)
       self.stream = self.stream.lstrip(m.group(0))
       self.spaces()
       if m.group(0) == "":
@@ -118,7 +118,7 @@ class config_parser(parser):
 
 class arg_parser(parser):
    def __init__(self, args, opt=None):
-      self.stream = " ".join(args)
+      self.stream = "\t".join(args)
       self.options = opt
       if self.options is None:
          self.options = default_opts()
