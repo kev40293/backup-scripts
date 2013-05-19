@@ -31,7 +31,7 @@ class parser:
       self.spaces()
       if m.group(0) == "":
          return None
-      return m.group(0)
+      return m.group(0).rstrip()
 
    def symbols(self, sym):
       m = re.match('\A('+sym+')', self.stream)
