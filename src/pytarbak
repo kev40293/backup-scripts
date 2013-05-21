@@ -1,0 +1,13 @@
+#!/usr/bin/python
+
+from sys import argv
+
+if argv[1] is None:
+   print "No option given"
+elif argv[1] == "backup":
+   import ptb_utils.backup
+elif argv[1] == "recover":
+   import ptb_utils.backup
+else:
+   print "Invalid operation"
+
