@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from configparser import backup_parser, config_parser, arg_parser
+from ptb_utils.configparser import backup_parser, config_parser, arg_parser
 import sys
 
 cparse = backup_parser(sys.argv[1])
