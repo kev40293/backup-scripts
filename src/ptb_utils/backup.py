@@ -53,31 +53,29 @@ class backup:
       os.chdir(oldp)
       return os.path.basename(outname)
 
+def run(args):
+   if (len(args) < 2):
+      print 'backup.py source destination [config]'
+      sys.exit(1)
 
-if (len(sys.argv) < 2):
-   print 'backup.py source destination [config]'
-   sys.exit(1)
+   backup_type = args[1]
 
-backup_type = sys.argv[1]
+   cparse = config_parser(os.environ["HOME"] + "/.pytarbak")
+   options = cparse.get_options()
+   aparse = arg_parser(args[2:], opt=options)
 
-cparse = config_parser(os.environ["HOME"] + "/.pytarbak")
-options = cparse.get_options()
-aparse = arg_parser(sys.argv[2:], opt=options)
+   p = aparse.options['profile']
+   if p != "default":
+      aparse = arg_parser(args[2:], opt=cparse.get_options(profile=p))
 
-p = aparse.options['profile']
-if p != "default":
-   aparse = arg_parser(sys.argv[2:], opt=cparse.get_options(profile=p))
+   options = aparse.options
 
-options = aparse.options
-
-#back_ob = backup(backup_source, backup_dest, excludes=['.cache'])
-back_ob = backup(options)
-if backup_type == "full":
-   back_ob.full()
-elif backup_type == "partial":
-   back_ob.partial()
-else:
-   print 'backup.py source destination [config]'
-   sys.exit(1)
-
-
+   #back_ob = backup(backup_source, backup_dest, excludes=['.cache'])
+   back_ob = backup(options)
+   if backup_type == "full":
+      back_ob.full()
+   elif backup_type == "partial":
+      back_ob.partial()
+   else:
+      print 'backup.py source destination [config]'
+      sys.exit(1)

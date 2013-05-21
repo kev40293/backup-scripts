@@ -1,13 +1,14 @@
 #!/usr/bin/python
 
 from sys import argv
+from ptb_utils import backup, recover
 
 if argv[1] is None:
    print "No option given"
 elif argv[1] == "backup":
-   import ptb_utils.backup
+   backup.run(argv[1:])
 elif argv[1] == "recover":
-   import ptb_utils.backup
+   recover.run(argv[1:])
 else:
    print "Invalid operation"
 
