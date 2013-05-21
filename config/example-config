@@ -1,0 +1,8 @@
+default{
+}
+other {
+   target=test
+   dest=dest
+   exclude=regex
+   name=archive-name
+}
