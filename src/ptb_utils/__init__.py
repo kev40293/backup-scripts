@@ -1,5 +1,4 @@
 #!/usr/bin/python
-#      pytarbak : the main run file of the application
 #      Copyright (C) 2013  Kevin Brandstatter <icarusthecow@gmail.com>
 #
 #      This program is free software; you can redistribute it and/or modify
@@ -7,16 +6,4 @@
 #      the Free Software Foundation; either version 2 of the License, or
 #      (at your option) any later version.
 
-
-from sys import argv
-from ptb_utils import backup, recover
-
-if argv[1] is None:
-   print "No option given"
-elif argv[1] == "backup":
-   backup.run(argv[1:])
-elif argv[1] == "recover":
-   recover.run(argv[1:])
-else:
-   print "Invalid operation"
 
