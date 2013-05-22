@@ -1,5 +1,7 @@
 Rename?
 
+Graceful exit on tar failure
+
 install default configuration file if not present
 
 Removal of old backups
