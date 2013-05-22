@@ -11,7 +11,7 @@
 import sys
 import os
 import os.path
-from subprocess import check_call
+from subprocess import check_call, CalledProcessError
 import datetime
 from configparser import backup_parser, config_parser, arg_parser
 
@@ -55,7 +55,12 @@ class backup:
       args.extend(self.exclude_list)
       args.append(self.target)
       #print str(args)
-      check_call(args)
+      try:
+         check_call(args)
+      except CalledProcessError as e:
+         print "Backup failed with error code: " + str(e.returncode)
+         sys.exit(e.returncode)
+
       #with open(listfile, 'a') as f:
       #   f.write(os.path.basename(outname) + "\n")
       os.chdir(oldp)
