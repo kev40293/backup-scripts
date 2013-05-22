@@ -101,6 +101,10 @@ class config_parser(parser):
       self.read_config()
 
    def read_config(self):
+      if not os.path.exists(self.filename):
+         with open(self.filename, 'w') as nf:
+            print "Backup not found, creating new one"
+            nf.write('default {\n}')
       with open(self.filename) as cf:
          while True:
             profile = self.parseString()
