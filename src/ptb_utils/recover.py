@@ -26,7 +26,7 @@ def run(args):
    bparse = backup_parser(backup_file)
    recover_date = max(bparse.backups.keys())
    archives = bparse.backups[recover_date]
-   snarfile = backup_dir + "/" + recover_date + ".snar"
+   snarfile = backup_dir + "/" + name + '-' + recover_date + ".snar"
 
    oldcwd = os.getcwd()
    os.chdir(destination)
