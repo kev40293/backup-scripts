@@ -1,5 +1,7 @@
 Rename?
 
+Give option for which backup to restore
+
 Graceful exit on tar failure
 
 install default configuration file if not present
