@@ -11,7 +11,7 @@
 import sys
 import os
 import os.path
-from subprocess import call
+from subprocess import check_call
 import datetime
 from configparser import backup_parser, config_parser, arg_parser
 
@@ -55,7 +55,7 @@ class backup:
       args.extend(self.exclude_list)
       args.append(self.target)
       #print str(args)
-      call(args)
+      check_call(args)
       #with open(listfile, 'a') as f:
       #   f.write(os.path.basename(outname) + "\n")
       os.chdir(oldp)
@@ -63,7 +63,7 @@ class backup:
 
 def run(args):
    if (len(args) < 2):
-      print 'backup.py source destination [config]'
+      print 'backup type source destination [options]'
       sys.exit(1)
 
    backup_type = args[1]
