@@ -84,6 +84,13 @@ class backup_parser(parser):
    def add_backup(self, outfile):
       snardate = max(self.backups.keys())
       self.backups[snardate].append(outfile)
+      self.write_backup()
+
+   def remove_backup(self, key):
+      self.backups.pop(key, None)
+      self.write_backup()
+
+   def write_backup(self):
       with open(self.filename, "w") as cf:
          for key in self.backups.keys():
             cf.write(key + " {\n")

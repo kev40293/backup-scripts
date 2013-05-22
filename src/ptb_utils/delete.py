@@ -43,16 +43,18 @@ def run(args):
    else:
       print "Deleting..."
    archives = bparse.backups[backup_dates[choice]]
-   snarfile = backup_dir + "/" + backup_dates[choice] + ".snar"
+   snarfile = backup_dir + "/" + name + '-' + backup_dates[choice] + ".snar"
 
    oldcwd = os.getcwd()
    os.chdir(backup_dir)
 
    for arc in archives:
+      os.remove(arc)
       print "rm " + arc
    print "rm " + snarfile
+   os.remove(snarfile)
    print "Writing backup file"
+   bparse.remove_backup(backup_dates[choice])
+   bparse.write_backup()
 
    os.chdir(oldcwd)
-
-run(sys.argv)
