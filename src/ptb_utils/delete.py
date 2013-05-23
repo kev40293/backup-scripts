@@ -23,7 +23,6 @@ def run(args):
 
    backup_dates = bparse.backups.keys()
    backup_dates.sort()
-   print backup_dates
    for i,b in enumerate(backup_dates):
       print str(i) + ') ' + b
    print ""
