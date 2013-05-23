@@ -60,6 +60,7 @@ class backup:
       except CalledProcessError as e:
          print "Backup failed with error code: " + str(e.returncode)
          if (e.returncode > 1): # Ignore non fatal errors from tar
+            os.remove(outname)
             sys.exit(e.returncode)
 
       #with open(listfile, 'a') as f:
