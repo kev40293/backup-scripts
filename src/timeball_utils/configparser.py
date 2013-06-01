@@ -8,7 +8,7 @@
 #      (at your option) any later version.
 
 import re, os, sys
-usage ="pytarbak backup full|partial src dest [--profile=name] [--exclude=regexp] [--name=name]\n" + "                [--target=src] [--dest=dest]\n" + "pytarbak recover|delete backup-file\n" + "pytarbak --help"
+usage ="timeball backup full|partial src dest [--profile=name] [--exclude=regexp] [--name=name]\n" + "                [--target=src] [--dest=dest]\n" + "timeball recover|delete backup-file\n" + "timeball --help"
 
 def default_opts():
    return{

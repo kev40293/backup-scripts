@@ -75,7 +75,7 @@ def run(args):
 
    backup_type = args[1]
 
-   cparse = config_parser(os.environ["HOME"] + "/.pytarbak")
+   cparse = config_parser(os.environ["HOME"] + "/.timeball")
    options = cparse.get_options()
    aparse = arg_parser(args[2:], opt=options)
 

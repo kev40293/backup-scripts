@@ -1,1 +1,1 @@
-man_MANS=pytarbak.1
+man_MANS=timeball.1

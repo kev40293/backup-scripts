@@ -1,4 +1,4 @@
-pytarbak is a python based backup solution
+timeball is a python based backup solution
 designed to be simple and lightweight.
 
 It uses GNU tar in order to create sets of incremental archives

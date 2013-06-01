@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#      pytarbak : the main run file of the application
+#      timeball : the main run file of the application
 #      Copyright (C) 2013  Kevin Brandstatter <icarusthecow@gmail.com>
 #
 #      This program is free software; you can redistribute it and/or modify
@@ -9,10 +9,10 @@
 
 
 from sys import argv
-from ptb_utils import backup, recover, delete
-from ptb_utils.configparser import usage
-from ptb_utils.version import version
-print "pytarbak version @VERSION@"
+from timeball_utils import backup, recover, delete
+from timeball_utils.configparser import usage
+from timeball_utils.version import version
+print "timeball version @VERSION@"
 
 if argv[1] is None:
    print "No option given"

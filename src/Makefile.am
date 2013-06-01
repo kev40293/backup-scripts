@@ -1,3 +1,3 @@
-SUBDIRS=ptb_utils
-bin_SCRIPTS=pytarbak
+SUBDIRS=timeball_utils
+bin_SCRIPTS=timeball
 CLEANFILES=$(bin_SCRIPTS)

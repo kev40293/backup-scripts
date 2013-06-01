@@ -2,7 +2,7 @@
 
 import sys
 sys.path.insert(0, '../src')
-from ptb_utils.configparser import backup_parser, config_parser, arg_parser
+from timeball_utils.configparser import backup_parser, config_parser, arg_parser
 
 def backup():
    cparse = backup_parser(sys.argv[2])
