@@ -13,12 +13,11 @@ import os
 import os.path
 from subprocess import check_call, CalledProcessError
 import datetime
-from configparser import backup_parser, config_parser, arg_parser
+from configparser import backup_parser, config_parser, arg_parser, usage
 
 
 now= datetime.datetime.now()
 curdate = now.strftime("%Y-%m-%dT%H:%M:%S")
-usage ="pytarbak backup full|partial src dest [--profile=name] [--exclude=regexp] [--name=name]\n                [--target=src] [--dest=dest]"
 
 class backup:
    def __init__(self):

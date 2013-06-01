@@ -61,7 +61,6 @@ def run(args):
          archives.append(arc)
 
    archives.sort()
-   print archives
 
    for arc in archives:
       tar_args = ['tar', '-xjvf', backup_dir +"/" + arc, '-g', snarfile]
