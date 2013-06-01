@@ -33,13 +33,21 @@ class parser:
 
       pass
 
-   def parseString(self):
-      m = re.match('\A([^\t\n\r\f\v={}]*)', self.stream)
-      self.stream = self.stream.lstrip(m.group(0))
-      self.spaces()
+   def parseLine(self):
+      m = re.match('\A([^\n{}]*)', self.stream)
       if m.group(0) == "":
          return None
-      return m.group(0).rstrip()
+      self.stream = self.stream.lstrip(m.group(0))
+      self.spaces()
+      return m.group(0)
+
+   def parseString(self):
+      m = re.match('\A([^ \t\n\r\f\v={}]*)', self.stream)
+      if m.group(0) == "":
+         return None
+      self.stream = self.stream.lstrip(m.group(0))
+      self.spaces()
+      return m.group(0)
 
    def symbols(self, sym):
       m = re.match('\A('+sym+')', self.stream)
@@ -50,17 +58,32 @@ class parser:
       return m.group(0)
 
    def parseBlock(self):
+      curstream = self.stream
       s = self.symbols("{")
       if s ==  None:
+         self.stream = curstream
          return None
       exp_list = []
+      expr = ""
+      # parse a single line of the block
       while self.symbols("}") is None:
-         st = self.parseString()
-         if self.symbols("=") is not None:
-            st += "=" + self.parseString()
-         exp_list.append(st)
+         curstream = self.stream
+         expr = self.parseLine()
+         if expr is None:
+            self.stream = curstream
+            return None
+         exp_list.append(expr)
       self.spaces()
       return exp_list
+
+   def parseConfBlock(self):
+      curstream = self.stream
+      header = self.parseString()
+      expr_list = self.parseBlock()
+      if header is None or expr_list is None:
+         self.stream = curstream
+         return (None, None)
+      return (header, expr_list)
 
    def empty(self):
       return self.stream == ""
@@ -113,18 +136,16 @@ class config_parser(parser):
             print "Backup not found, creating new one"
             nf.write('default {\n}')
       with open(self.filename) as cf:
-         while True:
-            profile = self.parseString()
-            if profile is None:
-               break
+         profile, expL = self.parseConfBlock()
+         while profile is not None:
             self.options_db[profile] = default_opts()
-            confs = self.parseBlock()
-            for pair in confs:
+            for pair in expL:
                arg, val = pair.split("=")
                if arg == "exclude":
                      self.options_db[profile][arg].append(val)
                else:
                   self.options_db[profile][arg] = val
+            profile, expL = self.parseConfBlock()
       return self.options_db
 
    def get_options(self, profile="default"):
@@ -137,31 +158,33 @@ class config_parser(parser):
 
 class arg_parser(parser):
    def __init__(self, args, opt=None):
-      self.stream = "\t".join(args)
+      self.stream = "\n".join(args)
       self.options = opt
+      self.raw = list()
       if self.options is None:
          self.options = default_opts()
       self.parse_args()
-   def parse_arg(self):
-      if self.symbols("--") is None:
-         return False
-      k = self.parseString()
-      if self.symbols("=") is None:
-         return False
-      v = self.parseString()
-      if k == "exclude":
-         self.options[k].append(v)
-      else:
-         self.options[k] = v
-      return True
-
    def parse_args(self):
-      while self.parse_arg():
-         pass
-      src = self.parseString()
-      dest = self.parseString()
-      if src is not None:
-         self.options['target'] = os.path.realpath(src)
-      if dest is not None:
-         self.options['dest'] = os.path.realpath(dest)
+      while True:
+         arg, val = self.parseArg()
+         if val is None:
+            break
+         elif arg is None:
+            self.raw.append(val)
+         elif arg == "exclude":
+            self.options[arg].append(val)
+         else:
+            self.options[arg] = val
+      if len(self.raw) > 0:
+         self.options['target'] = self.raw[0]
+      if len(self.raw) > 1:
+         self.options['dest'] = self.raw[1]
 
+   def parseArg(self):
+      curstream = self.stream
+      if self.symbols("--") is None:
+         argex = self.parseLine()
+         return None, argex
+      argex = self.parseLine()
+      k, v = argex.split("=")
+      return k.rstrip(), v.lstrip()
