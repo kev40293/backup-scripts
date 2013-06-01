@@ -171,7 +171,8 @@ class arg_parser(parser):
          if val is None:
             if arg == "help":
                print usage
-            sys.exit(1)
+               sys.exit(1)
+            break
          elif arg is None:
             self.raw.append(val)
          elif arg == "exclude":
