@@ -1,10 +1,16 @@
 Rename?
 
-Documentation (man pages)
+two scripts, one recover/delete console, one for backup
+
+add config option for number of backups before each full
+   change partal/full to -- options and default to N partials
+   before each full
 
 optional encryption (GPG?)
 
 Complete:
+
+Basic Documentation, ready for dist
 
 Graceful exit on tar failure
  commit 39e3e9e58c2c2b5653c82c018c9ec3c56de1c30d
