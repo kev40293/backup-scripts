@@ -7,7 +7,8 @@
 #      the Free Software Foundation; either version 2 of the License, or
 #      (at your option) any later version.
 
-import re, os
+import re, os, sys
+usage ="pytarbak backup full|partial src dest [--profile=name] [--exclude=regexp] [--name=name]\n" + "                [--target=src] [--dest=dest]\n" + "pytarbak recover|delete backup-file\n" + "pytarbak --help"
 
 def default_opts():
    return{
@@ -168,7 +169,9 @@ class arg_parser(parser):
       while True:
          arg, val = self.parseArg()
          if val is None:
-            break
+            if arg == "help":
+               print usage
+            sys.exit(1)
          elif arg is None:
             self.raw.append(val)
          elif arg == "exclude":
@@ -186,5 +189,8 @@ class arg_parser(parser):
          argex = self.parseLine()
          return None, argex
       argex = self.parseLine()
-      k, v = argex.split("=")
+      try:
+         k, v = argex.split("=")
+      except ValueError:
+         return argex, None
       return k.rstrip(), v.lstrip()

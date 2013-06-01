@@ -18,6 +18,7 @@ from configparser import backup_parser, config_parser, arg_parser
 
 now= datetime.datetime.now()
 curdate = now.strftime("%Y-%m-%dT%H:%M:%S")
+usage ="pytarbak backup full|partial src dest [--profile=name] [--exclude=regexp] [--name=name]\n                [--target=src] [--dest=dest]"
 
 class backup:
    def __init__(self):
@@ -70,7 +71,7 @@ class backup:
 
 def run(args):
    if (len(args) < 2):
-      print 'backup type source destination [options]'
+      print usage
       sys.exit(1)
 
    backup_type = args[1]
@@ -85,6 +86,15 @@ def run(args):
 
    options = aparse.options
 
+   if options['target'] == "":
+      print "No target specified"
+      print usage
+      sys.exit(1)
+   if options['dest'] == "":
+      print "No destination specified"
+      print usage
+      sys.exit(1)
+
    #back_ob = backup(backup_source, backup_dest, excludes=['.cache'])
    back_ob = backup(options)
    if backup_type == "full":
@@ -92,5 +102,5 @@ def run(args):
    elif backup_type == "partial":
       back_ob.partial()
    else:
-      print 'backup.py source destination [config]'
+      print usage
       sys.exit(1)

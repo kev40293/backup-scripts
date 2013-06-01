@@ -10,6 +10,7 @@
 
 from sys import argv
 from ptb_utils import backup, recover, delete
+from ptb_utils.configparser import usage
 
 if argv[1] is None:
    print "No option given"
@@ -19,6 +20,8 @@ elif argv[1] == "recover":
    recover.run(argv[1:])
 elif argv[1] == "delete":
    delete.run(argv[1:])
+elif argv[1] == "--help":
+   print usage
 else:
    print "Invalid operation"
 
