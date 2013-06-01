@@ -6,6 +6,8 @@ add config option for number of backups before each full
    change partal/full to -- options and default to N partials
    before each full
 
+Debug mode print for switchable verbose output
+
 optional encryption (GPG?)
 
 Complete:
