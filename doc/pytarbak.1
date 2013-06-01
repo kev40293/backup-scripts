@@ -7,21 +7,75 @@ pytarbak \- python based scripts for incremental tar backups
 .SH SYNOPSIS
 .SY pytarbak
 .RI backup
-.OP full|partial
+.RI full|partial
+.RI src
+.RI dest
 .OP \-\-profile=name
 .OP \-\-exclude=regexp
 .OP \-\-name=name
 .OP \-\-target=src
 .OP \-\-dest=dest
-.RI src
-.RI dest
 
 .SY pytarbak
-.OP recover|delete
+.RI \-\-help
+
+.SY pytarbak
+.RI recover|delete
 .RI backup-file
 
 .SH DESCRIPTION
 pytarbak is a GNU Tar based backup approach. It can create and manage sets of incremental tar backups.
+
+.SH OPTIONS
+
+.SS Backup options
+
+.TP
+.B full
+Create a full backup.
+.
+.TP
+.B partial
+Create an incremental backup.
+.
+.TP
+.B \-\-profile=name
+Use backup options from profile name. Default profile is "default"
+
+.TP
+.B \-\-exclude=regexp
+Exclude files matching regexp from the backup
+
+.TP
+.B \-\-name=arcname
+Use arcname for the backup base name
+
+.TP
+.B src | \-\-target=src
+Specifiy the location to backup.
+
+.TP
+.B dest | \-\-dest=dest
+Specify location to put backup
+
+.SS Recovery and Deletion
+.
+.TP
+.B recover filename
+Start a backup recovery session with filename.
+
+.TP
+.B delete filename
+Delete a backup from backup file "filename"
+
+.SS Other options
+
+.TP
+.B \-\-help
+Show usage information
+
+
+
 .\" The following commands should be uncommented and
 .\" used where appropriate.
 .\" .Sh IMPLEMENTATION NOTES
