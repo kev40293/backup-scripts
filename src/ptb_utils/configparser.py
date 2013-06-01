@@ -142,6 +142,8 @@ class config_parser(parser):
             self.options_db[profile] = default_opts()
             for pair in expL:
                arg, val = pair.split("=")
+               arg = arg.rstrip()
+               val = val.lstrip()
                if arg == "exclude":
                      self.options_db[profile][arg].append(val)
                else:
