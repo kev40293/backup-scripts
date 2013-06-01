@@ -2,7 +2,7 @@ AC_INIT([pytarbak], [0.1])
 
 AM_INIT_AUTOMAKE([1.10 no-define foreign])
 
-AC_CONFIG_FILES([Makefile src/Makefile src/ptb_utils/Makefile src/pytarbak doc/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile src/ptb_utils/Makefile src/pytarbak doc/Makefile src/ptb_utils/version.py])
 
 AM_PATH_PYTHON([2.7])
 

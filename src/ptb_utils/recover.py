@@ -8,14 +8,17 @@
 #      (at your option) any later version.
 
 
-from configparser import backup_parser
+from configparser import backup_parser, usage
+from version import notice
 import sys, os
 from subprocess import call
 
 def run(args):
    if len(args) != 3:
-      print "recover.py backup-file destination"
+      print usage
       sys.exit(1)
+
+   print notice
 
    backup_file=os.path.realpath(args[1])
    backup_dir=os.path.dirname(backup_file)

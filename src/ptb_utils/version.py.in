@@ -1,0 +1,3 @@
+version = "@VERSION@"
+name = "@PACKAGE_NAME@"
+notice = "Copyright (C) 2013 Kevin Brandstatter "+name+" comes with ABSOLUTELY NO WARRANTY; This is free software, and you are welcome to redistribute it under certain conditions;"

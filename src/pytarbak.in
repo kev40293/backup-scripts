@@ -11,6 +11,8 @@
 from sys import argv
 from ptb_utils import backup, recover, delete
 from ptb_utils.configparser import usage
+from ptb_utils.version import version
+print "pytarbak version @VERSION@"
 
 if argv[1] is None:
    print "No option given"
