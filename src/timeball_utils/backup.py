@@ -14,6 +14,7 @@ import os.path
 from subprocess import check_call, CalledProcessError
 import datetime
 from configparser import backup_parser, config_parser, arg_parser, usage
+from shutil import copyfile, move
 
 
 now= datetime.datetime.now()
@@ -25,7 +26,7 @@ class backup:
    #def __init__(self, path_to_target, destination, excludes=[], name=""):
    def __init__(self, options):
       self.target = os.path.basename(options['target'])
-      self.dest = options['dest']
+      self.dest = os.path.realpath(options['dest'])
       self.target_dir = os.path.dirname(options['target'])
       self.exclude_list = []
       if options['name'] == "":
@@ -55,16 +56,22 @@ class backup:
       args.extend(self.exclude_list)
       args.append(self.target)
       #print str(args)
+      if backtype == "part":
+         copyfile(snarname, snarname+".bak")
       try:
          check_call(args)
       except CalledProcessError as e:
          print "Backup failed with error code: " + str(e.returncode)
          if (e.returncode > 1): # Ignore non fatal errors from tar
             os.remove(outname)
+            os.move(snarname+".bak", snarname)
             sys.exit(e.returncode)
+         print "Files that were modified or changed during the backup may be corrupted"
 
       #with open(listfile, 'a') as f:
       #   f.write(os.path.basename(outname) + "\n")
+      if backtype == "part":
+         os.remove(snarname+".bak")
       os.chdir(oldp)
       return os.path.basename(outname)
 
