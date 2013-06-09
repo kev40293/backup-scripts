@@ -51,10 +51,16 @@ def run(args):
    os.chdir(backup_dir)
 
    for arc in archives:
-      os.remove(arc)
-      print "rm " + arc
+      try:
+         os.remove(arc)
+         print "rm " + arc
+      except OSError:
+         print "Archive missing, perhaps from an failed delete earlier"
    print "rm " + snarfile
-   os.remove(snarfile)
+   try:
+      os.remove(snarfile)
+   except OSError:
+      print "Snar file already deleted"
    print "Writing backup file"
    bparse.remove_backup(backup_dates[choice])
    bparse.write_backup()

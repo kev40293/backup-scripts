@@ -64,7 +64,8 @@ class backup:
          print "Backup failed with error code: " + str(e.returncode)
          if (e.returncode > 1): # Ignore non fatal errors from tar
             os.remove(outname)
-            os.move(snarname+".bak", snarname)
+            if backtype == "part":
+               os.move(snarname+".bak", snarname)
             sys.exit(e.returncode)
          print "Files that were modified or changed during the backup may be corrupted"
 
