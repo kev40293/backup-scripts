@@ -54,8 +54,11 @@ class backup:
       listfile = "{0}/{1}-{2}.tarlist".format(self.dest, self.name, backupdate)
       args=['tar', '-cjvf', outname, '--one-file-system','-g', snarname]
       args.extend(self.exclude_list)
+      level = 0
+      if backtype == "part":
+         level=len(self.bparse.backups[backupdate])
+      args.append("--level="+str(level))
       args.append(self.target)
-      #print str(args)
       if backtype == "part":
          copyfile(snarname, snarname+".bak")
       try:
