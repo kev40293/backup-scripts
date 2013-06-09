@@ -62,7 +62,7 @@ class backup:
          check_call(args)
       except CalledProcessError as e:
          print "Backup failed with error code: " + str(e.returncode)
-         if (e.returncode > 1): # Ignore non fatal errors from tar
+         if (e.returncode > 2): # Ignore errors from tar
             os.remove(outname)
             if backtype == "part":
                os.move(snarname+".bak", snarname)
