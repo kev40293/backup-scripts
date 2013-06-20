@@ -20,8 +20,13 @@ timeball \- python based scripts for incremental tar backups
 .RI \-\-help
 
 .SY timeball
-.RI recover|delete
+.RI delete
 .RI backup-file
+
+.SY timeball
+.RI recover
+.RI backup-file
+.RI destination
 
 .SH DESCRIPTION
 timeball is a GNU Tar based backup approach. It can create and manage sets of incremental tar backups.
@@ -61,8 +66,8 @@ Specify location to put backup
 .SS Recovery and Deletion
 .
 .TP
-.B recover filename
-Start a backup recovery session with filename.
+.B recover filename dest
+Start a backup recovery session with filename. Backup will be extracted in <dest>
 
 .TP
 .B delete filename
