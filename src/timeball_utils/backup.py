@@ -68,20 +68,20 @@ class backup:
       try:
          check_call(args)
       except CalledProcessError as e:
-         print "Backup failed with error code: " + str(e.returncode)
+         logging.error("Backup failed with error code: " + str(e.returncode))
          if (e.returncode > 1): # Ignore errors from tar
             os.remove(outname)
             if backtype == "part":
                move(snarname+".bak", snarname)
             sys.exit(e.returncode)
-         print "Files that were modified or changed during the backup may be corrupted"
+         logging.warning("Files that were modified or changed during the backup may be corrupted")
       try:
-         print "Archive finished, compressing with bzip2"
+         logging.info("Archive finished, compressing with bzip2")
          check_call(['bzip2', outname])
          outname = outname + '.bz2'
-         print "Compression complete"
+         logging.info("Compression complete")
       except CalledProcessError as e:
-         print "Compression failed"
+         logging.error("Compression failed")
       #with open(listfile, 'a') as f:
       #   f.write(os.path.basename(outname) + "\n")
       if backtype == "part":
@@ -92,9 +92,9 @@ class backup:
    def cleanup_failed(self, snarname):
       # If backup failed, restore snar from backup
       if os.path.exists(snarname + ".bak"):
+         logging.info("Snar backup file found, recovering")
          move(snarname+".bak", snarname)
          # TODO remove the unecessary archives
-      pass
 
 def run(args):
    if (len(args) < 2):
