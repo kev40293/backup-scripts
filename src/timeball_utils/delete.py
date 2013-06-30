@@ -12,14 +12,11 @@ import sys, os
 from subprocess import call
 import logging
 
-def run(args):
-   if len(args) != 2:
-      usage
-      sys.exit(1)
-
+def run(opts):
    print notice
 
-   backup_file=os.path.realpath(args[1])
+   backup_file=os.path.realpath(opts['target'])
+   logging.debug("Using %s", backup_file)
    backup_dir=os.path.dirname(backup_file)
    name="".join(os.path.basename(backup_file).split('.')[0:-1])
 

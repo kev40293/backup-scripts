@@ -14,19 +14,14 @@ import sys, os
 from subprocess import call
 import logging
 
-def run(args):
-   if len(args) != 3:
-      print usage
-      sys.exit(1)
-
+def run(opts):
    print notice
-   #formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s: %(message)s')
 
-   backup_file=os.path.realpath(args[1])
+   backup_file=os.path.realpath(opts['target'])
    backup_dir=os.path.dirname(backup_file)
    name="".join(os.path.basename(backup_file).split('.')[0:-1])
 
-   destination=os.path.realpath(args[2])
+   destination=os.path.realpath(opts['dest'])
 
    bparse = backup_parser(backup_file)
    recover_date = max(bparse.backups.keys())

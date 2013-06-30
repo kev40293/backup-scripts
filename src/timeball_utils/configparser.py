@@ -13,11 +13,13 @@ usage ="timeball backup full|partial src dest [--profile=name] [--exclude=regexp
 
 def default_opts():
    return{
-      "name": "",
-      "target": "",
-      "dest": "",
+      "name": None,
+      "target": None,
+      "dest": None,
       "exclude": [],
-      "profile": "default"
+      "profile": "default",
+      "log-level": "warning",
+      "back_type": None
       }
 
 class parser:

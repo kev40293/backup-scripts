@@ -9,38 +9,36 @@
 
 
 from sys import argv
-from timeball_utils import backup, recover, delete
-from timeball_utils.configparser import usage
+from timeball_utils import argparser
+from timeball_utils.configparser import usage, config_parser
 from timeball_utils.version import version
+import os
 print "timeball version " + version
 import logging
+from timeball_utils.argparser import log_levels
 logging.basicConfig(format="%(asctime)s - %(levelname)s: %(message)s")
-log_levels = { "debug" : logging.DEBUG,
-               "info" : logging.INFO,
-               "warning" : logging.WARNING,
-               "error" : logging.ERROR,
-               "critical" : logging.CRITICAL
-               }
 
-for arg in argv:
-   sp = arg.split("=")
-   if len(sp) != 2:
-      continue
-   elif sp[0] == "--log-level":
-      if sp[1].lower() in log_levels.keys():
-         logging.getLogger().setLevel(log_levels[sp[1].lower()])
-      argv.remove(arg)
+opts = argparser.parse_cl()
+#print opts
+#import sys
+#sys.exit(1)
+logging.getLogger().setLevel(log_levels[opts['log_level'].lower()])
 
 if argv[1] is None:
    print "No option given"
 elif argv[1] == "backup":
-   backup.run(argv[1:])
+   from timeball_utils import backup
+   cparse = config_parser(os.environ['HOME'] + "/.timeball")
+   copts = cparse.get_options(profile=opts['profile'])
+   opts = argparser.parse_cl(options=copts)
+   backup.run(opts)
 elif argv[1] == "recover":
-   recover.run(argv[1:])
+   from timeball_utils import recover
+   recover.run(opts)
+   #recover.run(argv[1:])
 elif argv[1] == "delete":
-   delete.run(argv[1:])
-elif argv[1] == "--help":
-   print usage
+   from timeball_utils import delete
+   delete.run(opts)
 else:
    print "Invalid operation"
 

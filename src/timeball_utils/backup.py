@@ -13,8 +13,9 @@ import os
 import os.path
 from subprocess import check_call, CalledProcessError
 import datetime
-from configparser import backup_parser, config_parser, arg_parser, usage
+from configparser import backup_parser, config_parser, usage
 from shutil import copyfile, move
+import logging
 
 
 now= datetime.datetime.now()
@@ -96,37 +97,13 @@ class backup:
          move(snarname+".bak", snarname)
          # TODO remove the unecessary archives
 
-def run(args):
-   if (len(args) < 2):
-      print usage
-      sys.exit(1)
+def run(options):
+   backup_type = options['back_type']
 
-   backup_type = args[1]
-
-   cparse = config_parser(os.environ["HOME"] + "/.timeball")
-   options = cparse.get_options()
-   aparse = arg_parser(args[2:], opt=options)
-
-   p = aparse.options['profile']
-   if p != "default":
-      aparse = arg_parser(args[2:], opt=cparse.get_options(profile=p))
-
-   options = aparse.options
-
-   if options['target'] == "":
-      print "No target specified"
-      print usage
-      sys.exit(1)
-   if options['dest'] == "":
-      print "No destination specified"
-      print usage
-      sys.exit(1)
-
-   #back_ob = backup(backup_source, backup_dest, excludes=['.cache'])
    back_ob = backup(options)
    if backup_type == "full":
       back_ob.full()
-   elif backup_type == "partial":
+   elif backup_type == "part":
       back_ob.partial()
    else:
       print usage
