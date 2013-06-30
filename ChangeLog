@@ -1,0 +1,10 @@
+2013-06-30 Kevin Brandstatter <kevin@kbrandstatter.com>
+	* Release 0.1.1
+	* recover.py: Fix bug in backup base selection
+
+2013-06-20 Kevin Brandstatter <kevin@kbrandstatter.com>
+	* Release 0.1
+	* Initial release of timeball
+	* Backup, recover, and removal functionality
+	* Basic documentation/man pages
+	* Configuration file
