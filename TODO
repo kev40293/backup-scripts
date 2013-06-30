@@ -6,6 +6,10 @@ Dry run capability
 
 optional encryption (GPG?)
 
+0.2:
+   Fixup man pages
+   Configurable # of partials before full
+
 Complete:
 
 Basic Documentation, ready for dist
