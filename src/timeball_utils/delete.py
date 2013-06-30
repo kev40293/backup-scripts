@@ -10,6 +10,7 @@ from configparser import backup_parser, usage
 from version import notice
 import sys, os
 from subprocess import call
+import logging
 
 def run(args):
    if len(args) != 2:
@@ -53,14 +54,14 @@ def run(args):
    for arc in archives:
       try:
          os.remove(arc)
-         print "rm " + arc
+         logging.info("rm " + arc)
       except OSError:
-         print "Archive missing, perhaps from an failed delete earlier"
-   print "rm " + snarfile
+         logging.warning("Archive missing, perhaps from an failed delete earlier")
+   logging.info("rm " + snarfile)
    try:
       os.remove(snarfile)
    except OSError:
-      print "Snar file already deleted"
+      logging.warning("Snar file already deleted")
    print "Writing backup file"
    bparse.remove_backup(backup_dates[choice])
    bparse.write_backup()
