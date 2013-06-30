@@ -21,3 +21,4 @@ src/timeball_utils/version.py
 timeballc
 timeball
 stamp-h1
+*.tar.gz
