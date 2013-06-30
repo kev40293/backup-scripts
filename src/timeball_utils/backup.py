@@ -106,5 +106,5 @@ def run(options):
    elif backup_type == "part":
       back_ob.partial()
    else:
-      print usage
+      print "No backup type specified"
       sys.exit(1)
