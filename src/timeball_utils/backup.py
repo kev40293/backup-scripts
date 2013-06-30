@@ -49,35 +49,52 @@ class backup:
       oldp = os.getcwd()
       if not self.target_dir == "":
          os.chdir(self.target_dir)
-      outname = "{0}/{1}-{2}-{3}.tbz".format(self.dest, self.name, backtype, curdate)
+      # We'll just tar it first to avoid complications with child processes like bzip2
+      outname = "{0}/{1}-{2}-{3}.tar".format(self.dest, self.name, backtype, curdate)
       snarname = "{0}/{1}-{2}.snar".format(self.dest, self.name, backupdate)
-      listfile = "{0}/{1}-{2}.tarlist".format(self.dest, self.name, backupdate)
-      args=['tar', '-cjvf', outname, '--one-file-system','-g', snarname]
+      #listfile = "{0}/{1}-{2}.tarlist".format(self.dest, self.name, backupdate)
+      # Set the tar command line options
+      args=['tar', '-cvf', outname, '--one-file-system','-g', snarname]
       args.extend(self.exclude_list)
       level = 0
       if backtype == "part":
          level=len(self.bparse.backups[backupdate])
       args.append("--level="+str(level))
       args.append(self.target)
+      # Cleanup past backups that failed to complete
+      self.cleanup_failed(snarname)
       if backtype == "part":
          copyfile(snarname, snarname+".bak")
       try:
          check_call(args)
       except CalledProcessError as e:
          print "Backup failed with error code: " + str(e.returncode)
-         if (e.returncode > 2): # Ignore errors from tar
+         if (e.returncode > 1): # Ignore errors from tar
             os.remove(outname)
             if backtype == "part":
-               os.move(snarname+".bak", snarname)
+               move(snarname+".bak", snarname)
             sys.exit(e.returncode)
          print "Files that were modified or changed during the backup may be corrupted"
-
+      try:
+         print "Archive finished, compressing with bzip2"
+         check_call(['bzip2', outname])
+         outname = outname + '.bz2'
+         print "Compression complete"
+      except CalledProcessError as e:
+         print "Compression failed"
       #with open(listfile, 'a') as f:
       #   f.write(os.path.basename(outname) + "\n")
       if backtype == "part":
          os.remove(snarname+".bak")
       os.chdir(oldp)
       return os.path.basename(outname)
+
+   def cleanup_failed(self, snarname):
+      # If backup failed, restore snar from backup
+      if os.path.exists(snarname + ".bak"):
+         move(snarname+".bak", snarname)
+         # TODO remove the unecessary archives
+      pass
 
 def run(args):
    if (len(args) < 2):

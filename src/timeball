@@ -15,6 +15,21 @@ from timeball_utils.version import version
 print "timeball version " + version
 import logging
 logging.basicConfig(format="%(asctime)s - %(levelname)s: %(message)s")
+log_levels = { "debug" : logging.DEBUG,
+               "info" : logging.INFO,
+               "warning" : logging.WARNING,
+               "error" : logging.ERROR,
+               "critical" : logging.CRITICAL
+               }
+
+for arg in argv:
+   sp = arg.split("=")
+   if len(sp) != 2:
+      continue
+   elif sp[0] == "--log-level":
+      if sp[1].lower() in log_levels.keys():
+         logging.getLogger().setLevel(log_levels[sp[1].lower()])
+      argv.remove(arg)
 
 if argv[1] is None:
    print "No option given"
