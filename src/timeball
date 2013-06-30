@@ -12,7 +12,9 @@ from sys import argv
 from timeball_utils import backup, recover, delete
 from timeball_utils.configparser import usage
 from timeball_utils.version import version
-print "timeball version @VERSION@"
+print "timeball version " + version
+import logging
+logging.basicConfig(format="%(asctime)s - %(levelname)s: %(message)s")
 
 if argv[1] is None:
    print "No option given"
