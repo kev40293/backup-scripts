@@ -12,6 +12,7 @@ from configparser import backup_parser, usage
 from version import notice
 import sys, os
 from subprocess import call
+import logging
 
 def run(args):
    if len(args) != 3:
@@ -19,6 +20,7 @@ def run(args):
       sys.exit(1)
 
    print notice
+   #formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s: %(message)s')
 
    backup_file=os.path.realpath(args[1])
    backup_dir=os.path.dirname(backup_file)
@@ -43,6 +45,7 @@ def run(args):
    else:
       choice = int(cin)
    recover_date = dlist[choice]
+   logging.debug(recover_date)
 
    sys.stdout.write("Restore from " + recover_date + " (y/N) ")
    cin = sys.stdin.readline().rstrip('\n')
@@ -50,13 +53,15 @@ def run(args):
       return
 
    snarfile = backup_dir + "/" + name + '-' + recover_date + ".snar"
+   base_back = None
    for k in bparse.backups.keys():
       if k <= recover_date:
-         base_back = k
-         break
-
+         if base_back is None or base_back < k:
+            base_back = k
+   logging.debug("base_back " + base_back)
    archives = []
    for arc in bparse.backups[base_back]:
+      logging.debug(arc)
       if strip_date(arc) <= recover_date:
          archives.append(arc)
 
@@ -69,7 +74,7 @@ def run(args):
    os.chdir(oldcwd)
 
 def strip_date(arcname):
-   return "-".join(arcname.split('-')[-3:]).rstrip('.tbz')
+   return "-".join(arcname.split('-')[-3:]).rstrip('.tar.bz2')
 
 def generate_datelist(backupdb):
    datelist = []
