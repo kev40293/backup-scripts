@@ -70,10 +70,12 @@ class backup:
          check_call(args)
       except CalledProcessError as e:
          logging.error("Backup failed with error code: " + str(e.returncode))
-         if (e.returncode > 1): # Ignore errors from tar
+         if (e.returncode > 2): # Ignore errors from tar
             os.remove(outname)
             if backtype == "part":
                move(snarname+".bak", snarname)
+            if backtype == "full":
+               os.remove(snarname)
             sys.exit(e.returncode)
          logging.warning("Files that were modified or changed during the backup may be corrupted")
       try:
