@@ -6,6 +6,10 @@ Dry run capability
 
 optional encryption (GPG?)
 
+Better error handling (Failure or ignore?)
+   error 1 means file modification
+   error 2 from tar means directory checksum error (subdir deleted before directory finished)
+
 0.2:
    Fixup man pages
    Configurable # of partials before full
