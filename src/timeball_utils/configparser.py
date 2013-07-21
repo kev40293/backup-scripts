@@ -107,9 +107,13 @@ class backup_parser(parser):
          self.backups[date] = backup_list
       return self.backups
 
-   def add_backup(self, outfile):
-      snardate = max(self.backups.keys())
-      self.backups[snardate].append(outfile)
+   def add_backup(self, outfile, date=None):
+      if date is None:
+         date = max(self.backups.keys())
+      if date not in self.backups.keys():
+         self.backups[date] = [outfile]
+      else:
+         self.backups[date].append(outfile)
       self.write_backup()
 
    def remove_backup(self, key):
@@ -117,12 +121,15 @@ class backup_parser(parser):
       self.write_backup()
 
    def write_backup(self):
-      with open(self.filename, "w") as cf:
-         for key in self.backups.keys():
-            cf.write(key + " {\n")
-            for v in self.backups[key]:
-               cf.write(v + "\n")
-            cf.write("}\n")
+      try:
+         with open(self.filename, "w") as cf:
+            for key in self.backups.keys():
+               cf.write(key + " {\n")
+               for v in self.backups[key]:
+                  cf.write(v + "\n")
+               cf.write("}\n")
+      except IOError:
+          logging.error("Could not write to backup file")
 
 class config_parser(parser):
    options_db = {

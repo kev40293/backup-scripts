@@ -38,13 +38,15 @@ class backup:
       self.bparse = backup_parser('{0}/{1}.backup'.format(self.dest, self.name))
 
    def partial(self):
-      outfile = self.run("part", max(self.bparse.backups.keys()))
-      self.bparse.add_backup(outfile)
+      if (len(self.bparse.backups.keys()) == 0):
+         logging.error("No full backup to base a partial off of")
+      else:
+         outfile = self.run("part", max(self.bparse.backups.keys()))
+         self.bparse.add_backup(outfile)
 
    def full(self):
       outfile = self.run("full", curdate)
-      with open(self.dest+"/"+self.name+".backup", "a") as bf:
-         bf.write(curdate + " {\n" + outfile + "\n}\n")
+      self.bparse.add_backup(outfile, date=curdate)
 
    def run(self, backtype, backupdate):
       oldp = os.getcwd()
