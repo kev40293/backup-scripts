@@ -6,7 +6,7 @@
 #      the Free Software Foundation; either version 2 of the License, or
 #      (at your option) any later version.
 
-from configparser import backup_parser, usage
+from configparser import backup_parser
 from version import notice
 import sys, os
 from subprocess import call

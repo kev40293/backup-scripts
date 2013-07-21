@@ -13,7 +13,7 @@ import os
 import os.path
 from subprocess import check_call, CalledProcessError
 import datetime
-from configparser import backup_parser, config_parser, usage
+from configparser import backup_parser, config_parser
 from shutil import copyfile, move
 import logging
 
