@@ -17,7 +17,7 @@ import logging
 def run(opts):
    print notice
 
-   backup_file=os.path.realpath(opts['target'])
+   backup_file=os.path.realpath(opts['backup-file'])
    backup_dir=os.path.dirname(backup_file)
    name="".join(os.path.basename(backup_file).split('.')[0:-1])
 

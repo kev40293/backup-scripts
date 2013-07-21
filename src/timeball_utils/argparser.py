@@ -36,9 +36,9 @@ def parse_cl(options=default_opts):
       aparse.add_argument("--full", action='store_const', dest='back_type', const="full")
       aparse.add_argument("--partial", action='store_const', dest='back_type', const="part")
    elif argv[1] == "delete":
-      aparse.add_argument("backup-file", default=options['target'])
+      aparse.add_argument("backup-file")
    elif argv[1] == "recover":
-      aparse.add_argument("backup-file", default=options['target'])
+      aparse.add_argument("backup-file")
       aparse.add_argument("dest", default='.', nargs="?")
    else:
       print general_usage
