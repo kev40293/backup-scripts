@@ -1,4 +1,4 @@
-AC_INIT([timeball], [0.1.1])
+AC_INIT([timeball], [0.2])
 
 AM_INIT_AUTOMAKE([1.10 no-define foreign])
 
