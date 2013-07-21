@@ -10,7 +10,7 @@
 
 from sys import argv
 from timeball_utils import argparser
-from timeball_utils.configparser import usage, config_parser
+from timeball_utils.configparser import config_parser
 from timeball_utils.version import version
 import os
 print "timeball version " + version

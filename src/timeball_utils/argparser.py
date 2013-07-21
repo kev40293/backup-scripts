@@ -3,6 +3,7 @@
 import argparse
 from sys import argv, exit
 import logging
+general_usage = "usage: timeball <command> [<args>]\n" + "Available commands:\n" + "   backup      Perform a full or partial backup\n" + "   recover     Recover a backup\n" + "   delete      Delete a backup\n\n" + "See 'timeball <command> --help for command specific options"
 
 log_levels = { "debug" : logging.DEBUG,
                "info" : logging.INFO,
@@ -35,11 +36,11 @@ def parse_cl(options=default_opts):
       aparse.add_argument("--full", action='store_const', dest='back_type', const="full")
       aparse.add_argument("--partial", action='store_const', dest='back_type', const="part")
    elif argv[1] == "delete":
-      aparse.add_argument("target", default=options['target'])
+      aparse.add_argument("backup-file", default=options['target'])
    elif argv[1] == "recover":
-      aparse.add_argument("target", default=options['target'])
+      aparse.add_argument("backup-file", default=options['target'])
       aparse.add_argument("dest", default='.', nargs="?")
    else:
-      print "No valid action supplied"
-      exit(1)
+      print general_usage
+      exit(0)
    return vars(aparse.parse_args(argv[2:]))

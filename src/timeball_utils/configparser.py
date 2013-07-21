@@ -9,7 +9,6 @@
 
 import re, os, sys
 import logging
-usage ="timeball backup full|partial src dest [--profile=name] [--exclude=regexp] [--name=name]\n" + "                [--target=src] [--dest=dest]\n" + "timeball delete backup-file\n" + "timeball recover backup-file destination\n" + "timeball --help"
 
 def default_opts():
    return{
