@@ -23,13 +23,9 @@ def default_opts():
       }
 
 class parser:
+   stream = ""
    def __init__(self, filename):
-      self.stream = ""
-      try:
-         with open(filename) as inf:
-            self.stream += inf.read()
-      except:
-         return None
+      pass
 
    def spaces(self):
       #m = re.match('\Ai(\s*)', self.stream)
@@ -95,8 +91,13 @@ class parser:
 class backup_parser(parser):
    backups = dict()
    def __init__(self, backup_file):
-      parser.__init__(self, backup_file)
       self.filename = backup_file
+      try:
+         with open(self.filename) as inf:
+            self.stream += inf.read()
+      except:
+         logging.error("Failed to read backup file")
+         sys.exit(1)
       self.read_backup_file()
 
    def read_backup_file(self):
