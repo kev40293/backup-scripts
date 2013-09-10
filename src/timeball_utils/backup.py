@@ -22,19 +22,22 @@ now= datetime.datetime.now()
 curdate = now.strftime("%Y-%m-%dT%H:%M:%S")
 
 class backup:
-   def __init__(self):
-      pass
-   #def __init__(self, path_to_target, destination, excludes=[], name=""):
    def __init__(self, options):
       self.target = os.path.basename(options['target'])
       self.dest = os.path.realpath(options['dest'])
       self.target_dir = os.path.dirname(options['target'])
-      self.exclude_list = []
       if options['name'] == "":
          options['name'] = self.target
       self.name = self.target
-      for ex in options['exclude']:
-         self.exclude_list.append("--exclude="+ ex)
+      self.exclude_args = self.get_exclude_args(options['exclude'])
+
+   def get_exclude_args(self, exclude_options):
+      excluded_files = []
+      for ex in exclude_options:
+         excluded_files.append("--exclude="+ ex)
+      return excluded_files
+
+   def parse_backup_file(self):
       self.bparse = backup_parser('{0}/{1}.backup'.format(self.dest, self.name))
 
    def partial(self):
@@ -58,7 +61,7 @@ class backup:
       #listfile = "{0}/{1}-{2}.tarlist".format(self.dest, self.name, backupdate)
       # Set the tar command line options
       args=['tar', '-cvf', outname, '--one-file-system','-g', snarname]
-      args.extend(self.exclude_list)
+      args.extend(self.exclude_args)
       level = 0
       if backtype == "part":
          level=len(self.bparse.backups[backupdate])
