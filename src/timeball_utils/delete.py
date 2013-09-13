@@ -6,19 +6,17 @@
 #      the Free Software Foundation; either version 2 of the License, or
 #      (at your option) any later version.
 
-from configparser import backup_parser, usage
+from configparser import backup_parser
 from version import notice
 import sys, os
 from subprocess import call
+import logging
 
-def run(args):
-   if len(args) != 2:
-      usage
-      sys.exit(1)
-
+def run(opts):
    print notice
 
-   backup_file=os.path.realpath(args[1])
+   backup_file=os.path.realpath(opts['backup-file'])
+   logging.debug("Using %s", backup_file)
    backup_dir=os.path.dirname(backup_file)
    name="".join(os.path.basename(backup_file).split('.')[0:-1])
 
@@ -53,14 +51,14 @@ def run(args):
    for arc in archives:
       try:
          os.remove(arc)
-         print "rm " + arc
+         logging.info("rm " + arc)
       except OSError:
-         print "Archive missing, perhaps from an failed delete earlier"
-   print "rm " + snarfile
+         logging.warning("Archive missing, perhaps from an failed delete earlier")
+   logging.info("rm " + snarfile)
    try:
       os.remove(snarfile)
    except OSError:
-      print "Snar file already deleted"
+      logging.warning("Snar file already deleted")
    print "Writing backup file"
    bparse.remove_backup(backup_dates[choice])
    bparse.write_backup()

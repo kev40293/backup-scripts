@@ -1,5 +1,5 @@
 .\" The following commands are required for all man pages.
-.TH PYTARBAK 1 "26 May 2013" "timeball Version 0.1"
+.TH TIMEBALL @VERSION@ "21 July 2013" "timeball Version @VERSION@"
 .SH NAME
 timeball \- python based scripts for incremental tar backups
 .\" This next command is for sections 2 and 3 only.
@@ -7,7 +7,7 @@ timeball \- python based scripts for incremental tar backups
 .SH SYNOPSIS
 .SY timeball
 .RI backup
-.RI full|partial
+.RI \-\-full|\-\-partial
 .RI src
 .RI dest
 .OP \-\-profile=name
@@ -15,18 +15,21 @@ timeball \- python based scripts for incremental tar backups
 .OP \-\-name=name
 .OP \-\-target=src
 .OP \-\-dest=dest
-
-.SY timeball
-.RI \-\-help
+.OP \-\-log\-level=log\-level
 
 .SY timeball
 .RI delete
 .RI backup-file
+.OP \-\-log\-level=log\-level
 
 .SY timeball
 .RI recover
 .RI backup-file
-.RI destination
+.OP destination
+.OP \-\-log\-level=log\-level
+
+.SY timeball
+.RI \-\-help
 
 .SH DESCRIPTION
 timeball is a GNU Tar based backup approach. It can create and manage sets of incremental tar backups.
@@ -36,11 +39,11 @@ timeball is a GNU Tar based backup approach. It can create and manage sets of in
 .SS Backup options
 
 .TP
-.B full
+.B \-\-full
 Create a full backup.
 .
 .TP
-.B partial
+.B \-\-partial
 Create an incremental backup.
 .
 .TP
@@ -56,11 +59,11 @@ Exclude files matching regexp from the backup
 Use arcname for the backup base name
 
 .TP
-.B src | \-\-target=src
+.B src
 Specifiy the location to backup.
 
 .TP
-.B dest | \-\-dest=dest
+.B dest
 Specify location to put backup
 
 .SS Recovery and Deletion
