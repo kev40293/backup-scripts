@@ -1,3 +1,11 @@
+2013-09-13 Kevin Brandstatter <kevin@kbrandstatter.com>
+	* Release 0.2
+	* Bug fix release
+	* Fixed missing imports
+	* Updated man pages
+	* Updated argument parsing
+	* Graceful exit on missing backup file
+
 2013-06-30 Kevin Brandstatter <kevin@kbrandstatter.com>
 	* Release 0.1.1
 	* recover.py: Fix bug in backup base selection
