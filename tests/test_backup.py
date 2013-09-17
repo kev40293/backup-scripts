@@ -53,11 +53,11 @@ class TestBackupFunctions (unittest.TestCase):
       self.assertTrue('--exclude=two' in exclude_args)
       self.assertTrue('--exclude=three and a half' in exclude_args)
 
-   def test_cleanup_failed(self):
-      self.backup_test.cleanup_failed()
+   def test_remove_unfinished_backups(self):
+      self.backup_test.remove_unfinished_backups()
       with open(self.backup_test.snar_name+".bak", "w"):
          pass
-      self.backup_test.cleanup_failed()
+      self.backup_test.remove_unfinished_backups()
       os.remove(self.backup_test.snar_name)
 
    def test_get_full_backup_date(self):
@@ -67,11 +67,3 @@ class TestBackupFunctions (unittest.TestCase):
       self.backup_test.bparse.backups = self.example_backups
       self.backup_test.backup_type = "part"
       self.assertEquals(self.backup_test.get_backup_date(), "2013-07-18T23:11:30")
-
-   def test_partial_backup(self):
-      pass
-      #self.assertTrue(False)
-
-   def test_full_backup(self):
-      pass
-      #self.assertTrue(False)

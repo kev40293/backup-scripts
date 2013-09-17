@@ -56,53 +56,34 @@ class backup:
    def do_backup(self):
       self.setup_backup()
       self.create_tar()
-      archive = self.compress_archive()
-      self.record_backup(archive)
+      self.compress_archive()
+      self.record_backup()
+      os.chdir(self.original_directory)
 
-   def record_backup(self, archive_file):
-      if self.backup_type == "full":
-         self.bparse.add_backup(outfile, date=curdate)
-      elif self.backup_type == "part":
-         self.bparse.add_backup(outfile)
-
-#   def partial(self):
-#      if (len(self.bparse.backups.keys()) == 0):
-#         logging.error("No full backup to base a partial off of")
-#      else:
-#         outfile = self.run("part", max(self.bparse.backups.keys()))
-#         self.bparse.add_backup(outfile)
-#
-#   def full(self):
-#      outfile = self.run("full", curdate)
-#      self.bparse.add_backup(outfile, date=curdate)
-
+   def setup_backup(self):
+      self.push_directory()
+      self.remove_unfinished_backups()
+      if self.backup_type == "part":
+         logging.info("Backing up snar file")
+         copyfile(self.snar_name, self.snar_name+".bak")
 
    def push_directory(self):
       self.original_directory = os.getcwd()
       if not self.target_dir == "":
          os.chdir(self.target_dir)
 
-   def pop_directory(self):
-      os.chdir(self.original_directory)
+   def remove_unfinished_backups(self):
+      if os.path.exists(self.snar_name + ".bak"):
+         logging.info("Snar backup file found, recovering")
+         move(self.snar_name+".bak", self.snar_name)
+         # TODO remove the unecessary archives
 
-
-   def get_tar_options(self):
-      # Set the tar command line options
-      args=['tar', '-cvf', self.get_tar_name(), '--one-file-system','-g', self.get_snar_name()]
-      args.extend(self.exclude_args)
-      #level = 0
-      #if backtype == "part":
-      #   level=len(self.bparse.backups[backupdate])
-      #args.append("--level="+str(level))
-      args.append(self.target)
-      # Cleanup past backups that failed to complete
-      return args
-
-   def setup_backup():
-      self.push_directory()
-      self.cleanup_failed()
-      if self.backup_type == "part":
-         copyfile(self.snar_name, self.snar_name+".bak")
+   def record_backup(self):
+      if self.backup_type == "full":
+         self.bparse.add_backup(self.tar_name+".bz2", date=curdate)
+      elif self.backup_type == "part":
+         self.bparse.add_backup(self.tar_name+".bz2")
+         os.remove(self.snar_filename+".bak")
 
    def create_tar(self):
       args = self.get_tar_options()
@@ -111,45 +92,32 @@ class backup:
       except CalledProcessError as e:
          logging.error("Backup failed with error code: " + str(e.returncode))
          if (e.returncode > 2): # Ignore errors from tar
-            os.remove(self.archive_file)
-            if self.backup_type == "part":
-               move(self.snar_filename+".bak", self.snar_filename)
-            if self.backup_type == "full":
-               os.remove(self.snar_filename)
+            self.cleanup_failed_archive()
             sys.exit(e.returncode)
          logging.warning("Files that were modified or changed during the backup may be corrupted")
-      return self.archive_file
 
-   def compress_archive(self, archive_name):
+   def cleanup_failed_archive(self):
+      os.remove(self.tar_name)
+      if self.backup_type == "part":
+         move(self.snar_name+".bak", self.snar_name)
+      if self.backup_type == "full":
+         os.remove(self.snar_filename)
+
+   def get_tar_options(self):
+      args=['tar', '-cvf', self.tar_name, '--one-file-system','-g', self.snar_name]
+      args.extend(self.exclude_args)
+      args.append(self.target)
+      return args
+
+   def compress_archive(self):
       try:
          logging.info("Archive finished, compressing with bzip2")
-         check_call(['bzip2', archive_name])
-         archive_name = archive_name + '.bz2'
+         check_call(['bzip2', self.tar_name])
          logging.info("Compression complete")
       except CalledProcessError as e:
          logging.error("Compression failed")
-      #with open(listfile, 'a') as f:
-      #   f.write(os.path.basename(outname) + "\n")
-      if self.backup_type == "part":
-         os.remove(self.snar_filename+".bak")
-      return os.path.basename(self.archive_name)
-
-   def cleanup_failed(self):
-      # If backup failed, restore snar from backup
-      if os.path.exists(self.snar_name + ".bak"):
-         logging.info("Snar backup file found, recovering")
-         move(self.snar_name+".bak", self.snar_name)
-         # TODO remove the unecessary archives
 
 
 def run(options):
-   backup_type = options['back_type']
-
    back_ob = backup(options)
-   if backup_type == "full":
-      back_ob.full()
-   elif backup_type == "part":
-      back_ob.partial()
-   else:
-      print "No backup type specified"
-      sys.exit(1)
+   back_ob.do_backup()
