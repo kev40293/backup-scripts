@@ -1,6 +1,5 @@
 *.pyc
 aclocal.m4
-autogen.sh
 autom4te.cache/
 config.h
 config.h.in
@@ -20,5 +19,6 @@ tests/dest
 src/timeball_utils/version.py
 timeballc
 timeball
+timeball.1
 stamp-h1
 *.tar.gz

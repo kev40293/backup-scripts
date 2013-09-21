@@ -16,6 +16,7 @@ import logging
 
 def run(opts):
    print notice
+   #formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s: %(message)s')
 
    backup_file=os.path.realpath(opts['backup-file'])
    backup_dir=os.path.dirname(backup_file)

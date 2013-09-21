@@ -1,5 +1,5 @@
 .\" The following commands are required for all man pages.
-.TH TIMEBALL 0.2 "21 July 2013" "timeball Version 0.2"
+.TH TIMEBALL @VERSION@ "21 July 2013" "timeball Version @VERSION@"
 .SH NAME
 timeball \- python based scripts for incremental tar backups
 .\" This next command is for sections 2 and 3 only.
