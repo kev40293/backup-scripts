@@ -6,6 +6,4 @@ AC_CONFIG_FILES([Makefile src/Makefile src/timeball_utils/Makefile doc/Makefile 
 
 AM_PATH_PYTHON([2.7])
 
-AC_CONFIG_HEADERS([config.h])
-
 AC_OUTPUT()
