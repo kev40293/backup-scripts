@@ -1,7 +1,7 @@
 #!/usr/bin/python2.7
 
 import argparse
-from sys import argv, exit
+from sys import exit, argv
 import logging
 general_usage = "usage: timeball <command> [<args>]\n" + "Available commands:\n" + "   backup      Perform a full or partial backup\n" + "   recover     Recover a backup\n" + "   delete      Delete a backup\n\n" + "See 'timeball <command> --help for command specific options"
 
@@ -21,13 +21,15 @@ default_opts = {
       "log-level": "warning",
       "back_type": None
       }
-def parse_cl(options=default_opts):
+def parse_cl(cl_args, options=default_opts):
    aparse = argparse.ArgumentParser(prog="timeball")
 
    aparse.add_argument("--log-level", default=options['log-level'], choices=log_levels.keys())
    #aparse.add_argument("--target", default=options['target'])
    #aparse.add_argument("--dest", default=options['dest'])
-   if argv[1] == "backup":
+   operation = cl_args.pop(0)
+   print operation
+   if operation == "backup":
       aparse.add_argument("target", nargs='?', default=options['target'])
       aparse.add_argument("dest", nargs='?', default=options['dest'])
       aparse.add_argument("--name", default=options['name'])
@@ -35,12 +37,28 @@ def parse_cl(options=default_opts):
       aparse.add_argument("--profile", default=options['profile'])
       aparse.add_argument("--full", action='store_const', dest='back_type', const="full")
       aparse.add_argument("--partial", action='store_const', dest='back_type', const="part")
-   elif argv[1] == "delete":
+   elif operation == "delete":
       aparse.add_argument("backup-file")
-   elif argv[1] == "recover":
+   elif operation == "recover":
       aparse.add_argument("backup-file")
       aparse.add_argument("dest", default='.', nargs="?")
    else:
       print general_usage
       exit(0)
-   return vars(aparse.parse_args(argv[2:]))
+   options = vars(aparse.parse_args(cl_args))
+   options['back_type'] = operation
+   return options
+
+import os
+from configparser import config_parser
+def get_options():
+    opts = parse_cl(argv)
+    cparse = config_parser(os.environ['HOME'] + "/.timeball")
+    copts = cparse.get_options(profile=opts['profile'])
+    if (opts['back_type'] == 'backup'):
+        for var in ['target', 'dest']:
+            if opts[var] == None:
+                opts[var] = copts[var]
+        for exc in copts['exclude']:
+            opts['exclude'].append(exc)
+    return opts

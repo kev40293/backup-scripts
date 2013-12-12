@@ -15,28 +15,29 @@ from timeball_utils.version import version
 import os
 print "timeball version " + version
 import logging
-from timeball_utils.argparser import log_levels
+from timeball_utils.argparser import log_levels, get_options
+from sys import argv
 logging.basicConfig(format="%(asctime)s - %(levelname)s: %(message)s")
 
-opts = argparser.parse_cl()
+argv.pop(0) # pop the program name
 #print opts
-#import sys
+import sys
 #sys.exit(1)
-logging.getLogger().setLevel(log_levels[opts['log_level'].lower()])
+#logging.getLogger().setLevel(log_levels[opts['log_level'].lower()])
+opts = get_options()
+print opts
+sys.exit(0)
 
-if argv[1] is None:
+
+if opts['back_type'] is None:
    print "No option given"
-elif argv[1] == "backup":
+elif opts['back_type'] == "backup":
    from timeball_utils import backup
-   cparse = config_parser(os.environ['HOME'] + "/.timeball")
-   copts = cparse.get_options(profile=opts['profile'])
-   opts = argparser.parse_cl(options=copts)
    backup.run(opts)
-elif argv[1] == "recover":
+elif opts['back_type'] == "recover":
    from timeball_utils import recover
    recover.run(opts)
-   #recover.run(argv[1:])
-elif argv[1] == "delete":
+elif opts['back_type'] == "delete":
    from timeball_utils import delete
    delete.run(opts)
 else:
