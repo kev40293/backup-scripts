@@ -20,13 +20,8 @@ from sys import argv
 logging.basicConfig(format="%(asctime)s - %(levelname)s: %(message)s")
 
 argv.pop(0) # pop the program name
-#print opts
-import sys
-#sys.exit(1)
 #logging.getLogger().setLevel(log_levels[opts['log_level'].lower()])
 opts = get_options()
-print opts
-sys.exit(0)
 
 
 if opts['back_type'] is None:

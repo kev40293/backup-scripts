@@ -1,6 +1,5 @@
 import unittest
 from sys import path
-path.insert(0,'../src/')
 
 import os
 import datetime

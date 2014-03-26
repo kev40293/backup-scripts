@@ -1,6 +1,5 @@
 import unittest
 from sys import path, argv
-path.insert(0,'../src/')
 
 from timeball_utils.argparser import *
 
