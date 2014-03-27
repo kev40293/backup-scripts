@@ -24,15 +24,15 @@ argv.pop(0) # pop the program name
 opts = get_options()
 
 
-if opts['back_type'] is None:
+if opts['operation'] is None:
    print "No option given"
-elif opts['back_type'] == "backup":
+elif opts['operation'] == "backup":
    from timeball_utils import backup
    backup.run(opts)
-elif opts['back_type'] == "recover":
+elif opts['operation'] == "recover":
    from timeball_utils import recover
    recover.run(opts)
-elif opts['back_type'] == "delete":
+elif opts['operation'] == "delete":
    from timeball_utils import delete
    delete.run(opts)
 else:

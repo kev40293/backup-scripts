@@ -33,9 +33,9 @@ class backup:
 
    def init_filenames(self):
       self.bparse = backup_parser('{0}/{1}.backup'.format(self.dest, self.name))
-      date = self.get_backup_date()
-      self.tar_name = "{0}/{1}-{2}-{3}.tar".format(self.dest, self.name, self.backup_type, date)
-      self.snar_name = "{0}/{1}-{2}.snar".format(self.dest, self.name, date)
+      self.date = self.get_backup_date()
+      self.tar_name = "{0}/{1}-{2}-{3}.tar".format(self.dest, self.name, self.backup_type, self.date)
+      self.snar_name = "{0}/{1}-{2}.snar".format(self.dest, self.name, self.date)
 
    def get_exclude_args(self, exclude_options):
       excluded_files = []
@@ -81,10 +81,10 @@ class backup:
 
    def record_backup(self):
       if self.backup_type == "full":
-         self.bparse.add_backup(self.tar_name+".bz2", date=curdate)
+         self.bparse.add_backup(self.tar_name+".bz2", date=self.date)
       elif self.backup_type == "part":
          self.bparse.add_backup(self.tar_name+".bz2")
-         os.remove(self.snar_filename+".bak")
+         os.remove(self.snar_name+".bak")
 
    def create_tar(self):
       args = self.get_tar_options()

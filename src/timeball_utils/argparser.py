@@ -19,7 +19,6 @@ default_opts = {
       "exclude": [],
       "profile": "default",
       "log-level": "warning",
-      "back_type": None
       }
 def parse_cl(cl_args, options=default_opts):
    aparse = argparse.ArgumentParser(prog="timeball")
@@ -36,6 +35,7 @@ def parse_cl(cl_args, options=default_opts):
       aparse.add_argument("--profile", default=options['profile'])
       aparse.add_argument("--full", action='store_const', dest='back_type', const="full")
       aparse.add_argument("--partial", action='store_const', dest='back_type', const="part")
+      aparse.set_defaults(back_type='full')
    elif operation == "delete":
       aparse.add_argument("backup-file")
    elif operation == "recover":
@@ -45,7 +45,7 @@ def parse_cl(cl_args, options=default_opts):
       print general_usage
       exit(0)
    options = vars(aparse.parse_args(cl_args))
-   options['back_type'] = operation
+   options['operation'] = operation
    return options
 
 import os
@@ -54,7 +54,7 @@ def get_options():
     opts = parse_cl(argv)
     cparse = config_parser(os.environ['HOME'] + "/.timeball")
     copts = cparse.get_options(profile=opts['profile'])
-    if (opts['back_type'] == 'backup'):
+    if (opts['operation'] == 'backup'):
         for var in ['target', 'dest']:
             if opts[var] == None:
                 opts[var] = copts[var]
