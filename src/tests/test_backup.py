@@ -7,6 +7,14 @@ import datetime
 from timeball_utils.backup import backup;
 from timeball_utils.configparser import default_opts
 
+import mock
+#import testscenarios
+def mock_init(s):
+   s.bparse = mock.Mock()
+   s.tar_name = "kevin-full-2013-07-18T23:11:30.tar.bz2"
+   s.snar_name = "kevin-2013-07-18T23:11:30.snar"
+
+@mock.patch('timeball_utils.backup.backup.init_filenames', mock_init)
 class TestBackupFunctions (unittest.TestCase):
 
    base_options = {
@@ -45,6 +53,12 @@ class TestBackupFunctions (unittest.TestCase):
       self.assertTrue(self.backup_test.dest == os.path.realpath("."))
       self.assertTrue(self.backup_test.exclude_args == [])
 
+   def test_with_no_name(self):
+      op = self.base_options
+      op["name"] = None
+      self.backup_test = backup(op)
+      self.assertTrue(self.backup_test.name == "test")
+
    def test_get_exclude_list(self):
       excludes = ['one', 'two', 'three and a half']
       exclude_args = self.backup_test.get_exclude_args(excludes)
@@ -66,3 +80,9 @@ class TestBackupFunctions (unittest.TestCase):
       self.backup_test.bparse.backups = self.example_backups
       self.backup_test.backup_type = "part"
       self.assertEquals(self.backup_test.get_backup_date(), "2013-07-18T23:11:30")
+
+   def test_no_full_for_part(self):
+      self.backup_test.bparse.backups = {};
+      self.backup_test.backup_type = "part"
+      with self.assertRaises(SystemExit):
+         self.backup_test.get_backup_date()

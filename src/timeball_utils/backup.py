@@ -24,7 +24,7 @@ class backup:
       self.target = os.path.basename(options['target'])
       self.dest = os.path.realpath(options['dest'])
       self.target_dir = os.path.dirname(options['target'])
-      if options['name'] == "":
+      if not options['name']:
          options['name'] = self.target
       self.name = self.target
       self.exclude_args = self.get_exclude_args(options['exclude'])
@@ -47,6 +47,7 @@ class backup:
       if self.backup_type == "part":
          if (len(self.bparse.backups.keys()) == 0):
             logging.error("No full backup to base a partial off of")
+            exit(1)
          else:
             return max(self.bparse.backups.keys())
       else:
