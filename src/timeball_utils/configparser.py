@@ -28,7 +28,7 @@ class parser:
          with open(filename) as inf:
             self.stream += inf.read()
       except:
-         return None
+         pass
 
    def spaces(self):
       #m = re.match('\Ai(\s*)', self.stream)
