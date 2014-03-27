@@ -25,10 +25,9 @@ def parse_cl(cl_args, options=default_opts):
    aparse = argparse.ArgumentParser(prog="timeball")
 
    aparse.add_argument("--log-level", default=options['log-level'], choices=log_levels.keys())
-   #aparse.add_argument("--target", default=options['target'])
-   #aparse.add_argument("--dest", default=options['dest'])
-   operation = cl_args.pop(0)
-   print operation
+   operation = None
+   if cl_args:
+       operation = cl_args.pop(0)
    if operation == "backup":
       aparse.add_argument("target", nargs='?', default=options['target'])
       aparse.add_argument("dest", nargs='?', default=options['dest'])

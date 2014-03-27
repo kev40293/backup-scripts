@@ -6,6 +6,9 @@ from timeball_utils.argparser import *
 class TestBackupArgumentParser(unittest.TestCase):
     def setUp(self):
         self.def_cl = ['backup', 'target', 'dest']
+    def testNofunction(self):
+        with self.assertRaises(SystemExit):
+            options = parse_cl([], default_opts)
 
     def testBacktype(self):
         options = parse_cl(self.def_cl, default_opts)
