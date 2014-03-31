@@ -33,9 +33,10 @@ class backup:
 
    def init_filenames(self):
       self.bparse = backup_parser('{0}/{1}.backup'.format(self.dest, self.name))
-      self.date = self.get_backup_date()
+      now= datetime.datetime.now()
+      self.date = now.strftime("%Y-%m-%dT%H:%M:%S")
       self.tar_name = "{0}/{1}-{2}-{3}.tar".format(self.dest, self.name, self.backup_type, self.date)
-      self.snar_name = "{0}/{1}-{2}.snar".format(self.dest, self.name, self.date)
+      self.snar_name = "{0}/{1}-{2}.snar".format(self.dest, self.name, self.get_base_backup_date())
 
    def get_exclude_args(self, exclude_options):
       excluded_files = []
@@ -43,7 +44,7 @@ class backup:
          excluded_files.append("--exclude="+ ex)
       return excluded_files
 
-   def get_backup_date(self):
+   def get_base_backup_date(self):
       if self.backup_type == "part":
          if (len(self.bparse.backups.keys()) == 0):
             logging.error("No full backup to base a partial off of")
@@ -51,8 +52,7 @@ class backup:
          else:
             return max(self.bparse.backups.keys())
       else:
-         now= datetime.datetime.now()
-         return now.strftime("%Y-%m-%dT%H:%M:%S")
+         return self.date
 
    def do_backup(self):
       self.setup_backup()
@@ -83,7 +83,7 @@ class backup:
       if self.backup_type == "full":
          self.bparse.add_backup(self.tar_name+".bz2", date=self.date)
       elif self.backup_type == "part":
-         self.bparse.add_backup(self.tar_name+".bz2")
+         self.bparse.add_backup(self.tar_name+".bz2", date=self.get_base_backup_date())
          os.remove(self.snar_name+".bak")
 
    def create_tar(self):

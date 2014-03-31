@@ -27,6 +27,7 @@ def parse_cl(cl_args, options=default_opts):
    operation = None
    if cl_args:
        operation = cl_args.pop(0)
+   aparse.set_defaults(profile='default')
    if operation == "backup":
       aparse.add_argument("target", nargs='?', default=options['target'])
       aparse.add_argument("dest", nargs='?', default=options['dest'])

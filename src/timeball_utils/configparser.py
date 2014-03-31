@@ -108,6 +108,7 @@ class backup_parser(parser):
       return self.backups
 
    def add_backup(self, outfile, date=None):
+      outfile = os.path.basename(outfile)
       if date is None:
          date = max(self.backups.keys())
       if date not in self.backups.keys():
