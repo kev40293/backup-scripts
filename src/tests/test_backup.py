@@ -74,15 +74,15 @@ class TestBackupFunctions (unittest.TestCase):
       os.remove(self.backup_test.snar_name)
 
    def test_get_full_backup_date(self):
-      self.assertEquals(self.backup_test.get_backup_date(), datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S"))
+      self.assertEquals(self.backup_test.get_base_backup_date(), datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S"))
 
-   def test_get_partial_backup_date(self):
+   def test_get_base_backup_date(self):
       self.backup_test.bparse.backups = self.example_backups
       self.backup_test.backup_type = "part"
-      self.assertEquals(self.backup_test.get_backup_date(), "2013-07-18T23:11:30")
+      self.assertEquals(self.backup_test.get_base_backup_date(), "2013-07-18T23:11:30")
 
    def test_no_full_for_part(self):
       self.backup_test.bparse.backups = {};
       self.backup_test.backup_type = "part"
       with self.assertRaises(SystemExit):
-         self.backup_test.get_backup_date()
+         self.backup_test.get_base_backup_date()
