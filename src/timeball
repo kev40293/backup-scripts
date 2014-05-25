@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2
 #      timeball : the main run file of the application
 #      Copyright (C) 2013  Kevin Brandstatter <icarusthecow@gmail.com>
 #
@@ -15,28 +15,24 @@ from timeball_utils.version import version
 import os
 print "timeball version " + version
 import logging
-from timeball_utils.argparser import log_levels
+from timeball_utils.argparser import log_levels, get_options
+from sys import argv
 logging.basicConfig(format="%(asctime)s - %(levelname)s: %(message)s")
 
-opts = argparser.parse_cl()
-#print opts
-#import sys
-#sys.exit(1)
-logging.getLogger().setLevel(log_levels[opts['log_level'].lower()])
+argv.pop(0) # pop the program name
+#logging.getLogger().setLevel(log_levels[opts['log_level'].lower()])
+opts = get_options()
 
-if argv[1] is None:
+
+if opts['operation'] is None:
    print "No option given"
-elif argv[1] == "backup":
+elif opts['operation'] == "backup":
    from timeball_utils import backup
-   cparse = config_parser(os.environ['HOME'] + "/.timeball")
-   copts = cparse.get_options(profile=opts['profile'])
-   opts = argparser.parse_cl(options=copts)
    backup.run(opts)
-elif argv[1] == "recover":
+elif opts['operation'] == "recover":
    from timeball_utils import recover
    recover.run(opts)
-   #recover.run(argv[1:])
-elif argv[1] == "delete":
+elif opts['operation'] == "delete":
    from timeball_utils import delete
    delete.run(opts)
 else:

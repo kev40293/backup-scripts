@@ -10,24 +10,9 @@ Better error handling (Failure or ignore?)
    error 1 means file modification
    error 2 from tar means directory checksum error (subdir deleted before directory finished)
 
-0.2:
-   Fixup man pages
+GOALS
+
+0.3:
+   Unit Tests
+   Test cases for configparser, argparser, delete, recover
    Configurable # of partials before full
-
-Complete:
-
-Basic Documentation, ready for dist
-
-debug output using logging module
-
-Graceful exit on tar failure
- commit 39e3e9e58c2c2b5653c82c018c9ec3c56de1c30d
-
-Give option for which backup to restore
- commit 3a60dea5ceaabcf5425545b59eaff5ab27146729
-
-Removal of old backups
- commit 1c46906d9f4277d81a4c46e35ee2a855028c974b
-
-install default configuration file if not present
- commit 84204ea769277cd86a2f059a17078b817db59e08
