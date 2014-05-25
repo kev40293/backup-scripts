@@ -1,3 +1,9 @@
+2014-5-25 Kevin Brandstatter <kevin@kbrandstatter.com>
+	* Added unit tests for various components
+	* Fixed some bugs in the date calculations
+	* Configure specifically for python2 for compatibility reasons
+	* More specific test cases for the parser class
+
 2013-9-20 Kevin Brandstatter <kevin@kbrandstatter.com>
 	* Fixed bug in release that caused make to delete the timeball script
 
