@@ -13,7 +13,7 @@ import os
 import os.path
 from subprocess import check_call, CalledProcessError
 import datetime
-from configparser import backup_parser, config_parser
+from timeball_utils.configparser import backup_parser, config_parser
 from shutil import copyfile, move
 import logging
 
@@ -26,7 +26,7 @@ class backup:
       self.target_dir = os.path.dirname(options['target'])
       if not options['name']:
          options['name'] = self.target
-      self.name = self.target
+      self.name = options["name"]
       self.exclude_args = self.get_exclude_args(options['exclude'])
       self.backup_type = options['back_type']
       self.init_filenames()

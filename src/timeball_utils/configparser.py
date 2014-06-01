@@ -144,7 +144,7 @@ class config_parser(parser):
    def read_config(self):
       if not os.path.exists(self.filename):
          with open(self.filename, 'w') as nf:
-            print "Backup not found, creating new one"
+            print("Backup not found, creating new one")
             nf.write('default {\n}')
       with open(self.filename) as cf:
          profile, expL = self.parseConfBlock()
@@ -182,7 +182,7 @@ class arg_parser(parser):
          arg, val = self.parseArg()
          if val is None:
             if arg == "help":
-               print usage
+               print(usage)
                sys.exit(1)
             break
          elif arg is None:

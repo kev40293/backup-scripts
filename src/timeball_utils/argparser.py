@@ -43,14 +43,14 @@ def parse_cl(cl_args, options=default_opts):
       aparse.add_argument("backup-file")
       aparse.add_argument("dest", default='.', nargs="?")
    else:
-      print general_usage
+      print(general_usage)
       exit(0)
    options = vars(aparse.parse_args(cl_args))
    options['operation'] = operation
    return options
 
 import os
-from configparser import config_parser
+from timeball_utils.configparser import config_parser
 def get_options():
     opts = parse_cl(argv)
     cparse = config_parser(os.environ['HOME'] + "/.timeball")

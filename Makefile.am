@@ -1,4 +1,4 @@
 SUBDIRS=src doc
 
 test:
-	cd src && nosetests -v
+	cd src && nosetests3 -v

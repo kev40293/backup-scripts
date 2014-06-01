@@ -28,6 +28,12 @@ class TestBackupArgumentParser(unittest.TestCase):
         self.assertEquals(options['target'], 'target')
         self.assertEquals(options['dest'], 'dest')
 
+    def testParseName(self):
+        self.def_cl.append("--name")
+        self.def_cl.append("testname")
+        options = parse_cl(self.def_cl, default_opts)
+        self.assertEquals(options['name'], 'testname')
+
 class TestRecoveryArgumentParser (unittest.TestCase):
     def setUp(self):
         self.def_cl = ['recover', 'target-file', 'dest']

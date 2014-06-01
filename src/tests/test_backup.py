@@ -59,6 +59,12 @@ class TestBackupFunctions (unittest.TestCase):
       self.backup_test = backup(op)
       self.assertTrue(self.backup_test.name == "test")
 
+   def test_with_different_name(self):
+       op = self.base_options
+       op['name'] = "better"
+       self.backup_test = backup(op)
+       self.assertTrue(self.backup_test.name == "better")
+
    def test_get_exclude_list(self):
       excludes = ['one', 'two', 'three and a half']
       exclude_args = self.backup_test.get_exclude_args(excludes)
