@@ -8,14 +8,14 @@
 #      (at your option) any later version.
 
 
-from configparser import backup_parser
-from version import notice
+from timeball_utils.configparser import backup_parser
+from timeball_utils.version import notice
 import sys, os
 from subprocess import call
 import logging
 
 def run(opts):
-   print notice
+   print( notice)
    #formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s: %(message)s')
 
    backup_file=os.path.realpath(opts['backup-file'])
@@ -32,9 +32,10 @@ def run(opts):
    os.chdir(destination)
    dlist = generate_datelist(bparse.backups)
    for i,d in enumerate(dlist):
-      print str(i) + ") " + d
-   print ""
-   sys.stdout.write( "Select a date to restore from (0): ")
+      print( str(i) + ") " + d)
+   print("")
+   print( "Select a date to restore from (0): ", end='')
+   sys.stdout.flush()
    cin = sys.stdin.readline().rstrip('\n')
    if cin == "":
       choice = 0
@@ -43,7 +44,8 @@ def run(opts):
    recover_date = dlist[choice]
    logging.debug(recover_date)
 
-   sys.stdout.write("Restore from " + recover_date + " (y/N) ")
+   print("Restore from " + recover_date + " (y/N) ", end='')
+   sys.stdout.flush()
    cin = sys.stdin.readline().rstrip('\n')
    if cin != "y":
       return

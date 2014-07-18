@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 import unittest
 from test_backup import *
 from test_argparser import *
